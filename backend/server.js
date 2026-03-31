@@ -57,7 +57,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/explorers', explorerRoutes);
 app.use('/api/locations', locationRoutes);
-app.use('/api/cities', cityRoutes);
+app.use('/cities', cityRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/videos', videoRoutes);
 app.use('/api/admin', adminRoutes);
