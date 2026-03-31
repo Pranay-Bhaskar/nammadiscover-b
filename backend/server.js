@@ -55,10 +55,10 @@ app.get('/health', (_req, res) =>
 // ── API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/explorers', explorerRoutes);
-app.use('/api/locations', locationRoutes);
+app.use('/explorers', explorerRoutes);
+app.use('/locations', locationRoutes);
 app.use('/cities', cityRoutes);
-app.use('/api/reviews', reviewRoutes);
+app.use('/reviews', reviewRoutes);
 app.use('/api/videos', videoRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/moderate', moderateRoutes);
