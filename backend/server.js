@@ -50,6 +50,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 // ── Rate limiting
 app.use('/api/', apiLimiter);
 
+// ─notFound Error
+app.get('/', (_req, res) => {
+  res.json({ message: 'NammaDiscover API is running', health: '/health' });
+});
+
 // ── Health check
 app.get('/health', (_req, res) =>
     res.json({ status: 'ok', time: new Date().toISOString() })
