@@ -314,14 +314,14 @@ const getVideos = async (req, res) => {
 
 
         if (search && search.trim()) {
-            const normalized = search.trim().toLowerCase();
+    const trimmed = search.trim();
 
-            filter.$or = [
-                { title: { $regex: normalized, $options: 'i' } },
-                { place_name: { $regex: `^${normalized}$`, $options: 'i' } }, // ✅ EXACT MATCH IGNORING CASE
-                { tags: { $regex: normalized, $options: 'i' } }
-            ];
-        }
+    filter.$or = [
+        { title: { $regex: trimmed, $options: 'i' } },
+        { place_name: { $regex: `^${trimmed}$`, $options: 'i' } }, // ✅ FIXED
+        { tags: { $regex: trimmed, $options: 'i' } }
+    ];
+}
 /*
         if (search && search.trim()) {
             const re = new RegExp(search.trim(), 'i');
