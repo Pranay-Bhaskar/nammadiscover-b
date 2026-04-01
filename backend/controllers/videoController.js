@@ -312,6 +312,17 @@ const getVideos = async (req, res) => {
             filter.status = 'approved';
         }
 
+
+        if (search && search.trim()) {
+            const normalized = search.trim().toLowerCase();
+
+            filter.$or = [
+                { title: { $regex: normalized, $options: 'i' } },
+                { place_name: { $regex: `^${normalized}$`, $options: 'i' } }, // ✅ EXACT MATCH IGNORING CASE
+                { tags: { $regex: normalized, $options: 'i' } }
+            ];
+        }
+/*
         if (search && search.trim()) {
             const re = new RegExp(search.trim(), 'i');
             filter.$or = [
@@ -320,7 +331,7 @@ const getVideos = async (req, res) => {
                 { tags: re }
             ];
         }
-
+*/
         const videos = await Video.find(filter).sort({ upload_time: -1 });
         res.json(videos);
     } catch (err) {
