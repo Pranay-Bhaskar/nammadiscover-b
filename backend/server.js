@@ -25,7 +25,7 @@ const guideRoutes = require('./routes/guides');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-//app.set('trust proxy', 1);    //NEW
+app.set('trust proxy', 1);    //NEW
 
 // ── Database
 connectDB();
