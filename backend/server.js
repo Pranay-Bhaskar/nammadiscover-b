@@ -20,6 +20,7 @@ const videoRoutes = require('./routes/videos');
 const adminRoutes = require('./routes/admin');
 const moderateRoutes = require('./routes/moderate');
 const guideRoutes = require('./routes/guides');
+const placesRoutes = require('./routes/places');
 
 
 const app = express();
@@ -68,9 +69,11 @@ app.use('/api/locations', locationRoutes);
 app.use('/api/cities', cityRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/videos', videoRoutes);
+app.use('/api/places', placesRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/moderate', moderateRoutes);
 app.use('/api/guides', guideRoutes);
+
 
 // ── Error handling
 app.use(notFound);
