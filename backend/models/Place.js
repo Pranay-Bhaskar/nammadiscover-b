@@ -1,98 +1,73 @@
 const mongoose = require('mongoose');
 
 const placeSchema = new mongoose.Schema({
+
     name: {
         en: { type: String, required: true, trim: true },
-        kn: { type: String, trim: true }, // Kannada (optional)
+        kn: { type: String, trim: true }
     },
 
     description: {
-        type: String,
-        trim: true,
+        en: { type: String, trim: true },
+        kn: { type: String, trim: true }
     },
 
-    category: {
-        type: String,
-        required: true,
-        enum: [
-            'food',
-            'nature',
-            'historical',
-            'temple',
-            'adventure',
-            'shopping',
-            'local_picks',
-            'other'
-        ]
+    culturalStory: {
+        en: { type: String },
+        kn: { type: String }
     },
 
-    tags: [{ type: String, trim: true }],
+    travelTips: {
+        en: { type: String },
+        kn: { type: String }
+    },
 
-    // 🌍 GEOJSON (CRITICAL — not like your video schema)
+    category: { type: String, required: true },
+    subcategory: { type: String },
+
+    city: { type: String },
+    district: { type: String },
+
     location: {
         type: {
             type: String,
             enum: ['Point'],
-            required: true,
+            required: true
         },
         coordinates: {
             type: [Number], // [lng, lat]
-            required: true,
+            required: true
         }
     },
 
-    // Optional human readable
-    address: {
-        type: String,
-        trim: true,
-    },
+    address: { type: String },
 
-    city: { type: String, trim: true },
-    state: { type: String, trim: true },
-    country: { type: String, default: 'India' },
+    tags: [{ type: String }],
+    images: [{ type: String }],
 
-    // Who created this place
+    rating: { type: Number, default: 0 },
+    authenticityScore: { type: Number, default: 0 },
+
+    openingHours: { type: String },
+    bestTimeToVisit: { type: String },
+    entryFee: { type: String },
+
+    isVerified: { type: Boolean, default: false },
+
     created_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
+        ref: "User",
+        required: true
     },
 
-    // Moderation system (same as videos)
     status: {
         type: String,
-        enum: ['pending', 'approved', 'rejected'],
-        default: 'pending',
-    },
-
-    moderation_note: { type: String },
-    moderated_at: { type: Date },
-    moderated_by: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
-
-    // Metrics
-    views: { type: Number, default: 0 },
+        enum: ["pending", "approved", "rejected"],
+        default: "pending"
+    }
 
 }, { timestamps: true });
 
-/* ================= INDEXES ================= */
+placeSchema.index({ location: "2dsphere" });
 
-// 🔥 Most important index (for map queries)
-placeSchema.index({ location: '2dsphere' });
-
-// Filters
-placeSchema.index({ status: 1 });
-placeSchema.index({ category: 1 });
-
-// Search optimization
-placeSchema.index({ "name.en": "text", tags: "text" });
-
-// Duplicate prevention (approx)
-placeSchema.index(
-    { "name.en": 1, location: 1 },
-    { unique: false } // don't make strict unique yet
-);
-
-module.exports = mongoose.model('Place', placeSchema);
+module.exports = mongoose.model("Place", placeSchema);
