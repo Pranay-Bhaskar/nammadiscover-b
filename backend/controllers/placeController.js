@@ -266,96 +266,204 @@
 // };
 
 
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+// const Place = require('../models/Place');
+
+
+// /* ================= CREATE PLACE ================= */
+// // POST /api/places
+// const createPlace = async (req, res) => {
+//     try {
+//         let {
+//             name,
+//             category,
+//             tags,
+//             latitude,
+//             longitude,
+//             address,
+//             city,
+//             state
+//         } = req.body;
+
+//         /* ===== VALIDATION ===== */
+
+//         if (!name || !name.en || !name.en.trim()) {
+//             return res.status(400).json({ error: 'Place name (en) is required' });
+//         }
+
+//         if (!category || !category.trim()) {
+//             return res.status(400).json({ error: 'Category is required' });
+//         }
+
+//         if (latitude === undefined || longitude === undefined) {
+//             return res.status(400).json({ error: 'Latitude and Longitude are required' });
+//         }
+
+//         const lat = parseFloat(latitude);
+//         const lng = parseFloat(longitude);
+
+//         if (Number.isNaN(lat) || Number.isNaN(lng)) {
+//             return res.status(400).json({ error: 'Invalid coordinates' });
+//         }
+
+//         /* ===== NORMALIZATION ===== */
+
+//         name = {
+//             en: name.en.trim(),
+//             ...(name.kn ? { kn: name.kn.trim() } : {})
+//         };
+
+//         const parsedTags = tags
+//             ? tags.split(',').map(t => t.trim()).filter(Boolean)
+//             : [];
+
+//         /* ===== CREATE ===== */
+
+//         const place = new Place({
+//             name,
+//             category: category.trim(),
+//             tags: parsedTags,
+//             location: {
+//                 type: "Point",
+//                 coordinates: [lng, lat] // IMPORTANT: [lng, lat]
+//             },
+//             address: address ? address.trim() : '',
+//             city: city ? city.trim() : '',
+//             state: state ? state.trim() : '',
+//             created_by: req.user._id,
+//             status: 'pending'
+//         });
+
+//         await place.save();
+
+//         res.status(201).json({
+//             message: 'Place submitted for approval',
+//             place
+//         });
+
+//     } catch (err) {
+//         console.error('createPlace error:', err);
+
+//         if (err.name === 'ValidationError') {
+//             const msg = Object.values(err.errors).map(e => e.message).join(', ');
+//             return res.status(400).json({ error: msg });
+//         }
+
+//         res.status(500).json({ error: err.message });
+//     }
+// };
+
+
+// /* ================= GET MY PLACES ================= */
+// // GET /api/places/my
+// const getMyPlaces = async (req, res) => {
+//     try {
+//         const places = await Place.find({
+//             created_by: req.user._id
+//         }).sort({ createdAt: -1 });
+
+//         res.json(places);
+//     } catch (err) {
+//         console.error('getMyPlaces error:', err);
+//         res.status(500).json({ error: err.message });
+//     }
+// };
+
+
+// module.exports = {
+//     createPlace,
+//     getMyPlaces
+// };
+
 const Place = require('../models/Place');
 
-
-/* ================= CREATE PLACE ================= */
-// POST /api/places
 const createPlace = async (req, res) => {
     try {
         let {
             name,
+            description,
+            culturalStory,
+            travelTips,
             category,
-            tags,
+            subcategory,
+            city,
+            district,
             latitude,
             longitude,
-            address,
-            city,
-            state
+            tags,
+            images,
+            rating,
+            authenticityScore,
+            openingHours,
+            bestTimeToVisit,
+            entryFee,
+            address
         } = req.body;
 
-        /* ===== VALIDATION ===== */
-
-        if (!name || !name.en || !name.en.trim()) {
-            return res.status(400).json({ error: 'Place name (en) is required' });
+        if (!name || !name.en) {
+            return res.status(400).json({ error: "Name is required" });
         }
 
-        if (!category || !category.trim()) {
-            return res.status(400).json({ error: 'Category is required' });
+        if (!category) {
+            return res.status(400).json({ error: "Category required" });
         }
 
         if (latitude === undefined || longitude === undefined) {
-            return res.status(400).json({ error: 'Latitude and Longitude are required' });
+            return res.status(400).json({ error: "Coordinates required" });
         }
 
         const lat = parseFloat(latitude);
         const lng = parseFloat(longitude);
 
         if (Number.isNaN(lat) || Number.isNaN(lng)) {
-            return res.status(400).json({ error: 'Invalid coordinates' });
+            return res.status(400).json({ error: "Invalid coordinates" });
         }
-
-        /* ===== NORMALIZATION ===== */
-
-        name = {
-            en: name.en.trim(),
-            ...(name.kn ? { kn: name.kn.trim() } : {})
-        };
-
-        const parsedTags = tags
-            ? tags.split(',').map(t => t.trim()).filter(Boolean)
-            : [];
-
-        /* ===== CREATE ===== */
 
         const place = new Place({
             name,
-            category: category.trim(),
-            tags: parsedTags,
+            description,
+            culturalStory,
+            travelTips,
+            category,
+            subcategory,
+            city,
+            district,
+
             location: {
                 type: "Point",
-                coordinates: [lng, lat] // IMPORTANT: [lng, lat]
+                coordinates: [lng, lat]
             },
-            address: address ? address.trim() : '',
-            city: city ? city.trim() : '',
-            state: state ? state.trim() : '',
+
+            tags: Array.isArray(tags) ? tags : [],
+            images: Array.isArray(images) ? images : [],
+
+            rating: Number(rating || 0),
+            authenticityScore: Number(authenticityScore || 0),
+
+            openingHours,
+            bestTimeToVisit,
+            entryFee,
+
+            address,
+
+            isVerified: false, // FORCE FALSE
             created_by: req.user._id,
-            status: 'pending'
+            status: "pending"
         });
 
         await place.save();
 
         res.status(201).json({
-            message: 'Place submitted for approval',
+            message: "Place submitted for approval",
             place
         });
 
     } catch (err) {
-        console.error('createPlace error:', err);
-
-        if (err.name === 'ValidationError') {
-            const msg = Object.values(err.errors).map(e => e.message).join(', ');
-            return res.status(400).json({ error: msg });
-        }
-
+        console.error(err);
         res.status(500).json({ error: err.message });
     }
 };
 
-
-/* ================= GET MY PLACES ================= */
-// GET /api/places/my
 const getMyPlaces = async (req, res) => {
     try {
         const places = await Place.find({
@@ -364,11 +472,9 @@ const getMyPlaces = async (req, res) => {
 
         res.json(places);
     } catch (err) {
-        console.error('getMyPlaces error:', err);
         res.status(500).json({ error: err.message });
     }
 };
-
 
 module.exports = {
     createPlace,
