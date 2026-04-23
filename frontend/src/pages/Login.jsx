@@ -57,7 +57,7 @@ const Login = () => {
                 }
 
                 .glass {
-                    background: rgba(255,255,255,0.05);
+                    background: rgba(255,255,255,0.02);
                     backdrop-filter: blur(30px);
                     -webkit-backdrop-filter: blur(30px);
                     border: 1px solid rgba(255,255,255,0.15);
