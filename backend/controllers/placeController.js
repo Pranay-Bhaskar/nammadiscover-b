@@ -375,6 +375,7 @@
 //     getMyPlaces
 // };
 
+/*
 const Place = require('../models/Place');
 
 const createPlace = async (req, res) => {
@@ -479,4 +480,189 @@ const getMyPlaces = async (req, res) => {
 module.exports = {
     createPlace,
     getMyPlaces
+};
+
+*/
+
+
+
+
+//NEW
+
+
+const Place = require('../models/Place');
+
+const createPlace = async (req, res) => {
+    try {
+        let {
+            name,
+            description,
+            culturalStory,
+            travelTips,
+            category,
+            subcategory,
+            city,
+            district,
+            latitude,
+            longitude,
+            tags,
+            images,
+            rating,
+            authenticityScore,
+            openingHours,
+            bestTimeToVisit,
+            entryFee,
+            address
+        } = req.body;
+
+        if (!name || !name.en) {
+            return res.status(400).json({ error: "Name is required" });
+        }
+
+        if (!category) {
+            return res.status(400).json({ error: "Category required" });
+        }
+
+        if (latitude === undefined || longitude === undefined) {
+            return res.status(400).json({ error: "Coordinates required" });
+        }
+
+        const lat = parseFloat(latitude);
+        const lng = parseFloat(longitude);
+
+        if (Number.isNaN(lat) || Number.isNaN(lng)) {
+            return res.status(400).json({ error: "Invalid coordinates" });
+        }
+
+        const place = new Place({
+            name,
+            description,
+            culturalStory,
+            travelTips,
+            category,
+            subcategory,
+            city,
+            district,
+            location: {
+                type: "Point",
+                coordinates: [lng, lat]
+            },
+            tags: Array.isArray(tags) ? tags : [],
+            images: Array.isArray(images) ? images : [],
+            rating: Number(rating || 0),
+            authenticityScore: Number(authenticityScore || 0),
+            openingHours,
+            bestTimeToVisit,
+            entryFee,
+            address,
+            isVerified: false,
+            created_by: req.user._id,
+            status: "pending"
+        });
+
+        await place.save();
+
+        res.status(201).json({
+            message: "Place submitted for approval",
+            place
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
+const getMyPlaces = async (req, res) => {
+    try {
+        const places = await Place.find({
+            created_by: req.user._id
+        }).sort({ createdAt: -1 });
+
+        res.json(places);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+const searchPlaces = async (req, res) => {
+    try {
+        const {
+            q = '',
+            city = '',
+            category = '',
+            latitude,
+            longitude,
+            radius = 50
+        } = req.query;
+
+        const query = {
+            status: 'approved'
+        };
+
+        if (q.trim()) {
+            query.$or = [
+                { 'name.en': { $regex: q.trim(), $options: 'i' } },
+                { 'description.en': { $regex: q.trim(), $options: 'i' } },
+                { category: { $regex: q.trim(), $options: 'i' } },
+                { subcategory: { $regex: q.trim(), $options: 'i' } },
+                { city: { $regex: q.trim(), $options: 'i' } },
+                { district: { $regex: q.trim(), $options: 'i' } },
+                { address: { $regex: q.trim(), $options: 'i' } },
+                { tags: { $regex: q.trim(), $options: 'i' } }
+            ];
+        }
+
+        if (city.trim()) {
+            query.city = { $regex: `^${city.trim()}$`, $options: 'i' };
+        }
+
+        if (category.trim()) {
+            query.category = { $regex: `^${category.trim()}$`, $options: 'i' };
+        }
+
+        let places;
+
+        if (latitude !== undefined && longitude !== undefined) {
+            const lat = parseFloat(latitude);
+            const lng = parseFloat(longitude);
+            const maxDistance = parseFloat(radius) * 1000;
+
+            if (Number.isNaN(lat) || Number.isNaN(lng)) {
+                return res.status(400).json({ error: 'Invalid coordinates in query' });
+            }
+
+            places = await Place.find({
+                ...query,
+                location: {
+                    $near: {
+                        $geometry: {
+                            type: 'Point',
+                            coordinates: [lng, lat]
+                        },
+                        $maxDistance: maxDistance
+                    }
+                }
+            }).limit(20);
+        } else {
+            places = await Place.find(query)
+                .sort({ createdAt: -1 })
+                .limit(20);
+        }
+
+        res.json({
+            success: true,
+            count: places.length,
+            places
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
+module.exports = {
+    createPlace,
+    getMyPlaces,
+    searchPlaces
 };
