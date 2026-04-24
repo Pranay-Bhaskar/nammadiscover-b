@@ -17,6 +17,6 @@ router.get('/:id', getLocationById);
 router.get('/:id/nearby', getNearby);
 router.get('/:id/reviews', getReviewsByLocation);
 router.post('/:id/reviews', protect, postReview);
-router.post('/', protect, isAdmin, createLocation);
+router.post('/', protect, createLocation);
 
 module.exports = router;
