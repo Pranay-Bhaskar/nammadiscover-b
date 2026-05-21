@@ -1,7 +1,7 @@
 # NammaDiscover Backend
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Pranay-Bhaskar/nammadiscover-f/main/frontend/public/logo.png" alt="NammaDiscover Logo" width="120" />
+  <img src="https://raw.githubusercontent.com/Pranay-Bhaskar/nammadiscover-f/main/frontend/public/logo.png" alt="NammaDiscover Logo" width="220" />
 
 [![Render Deployment](https://img.shields.io/badge/Deployed%20on-Render-blue?style=flat-square&logo=render)](https://namma-discover.onrender.com)
 [![Vercel Deployment](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=flat-square&logo=vercel)](https://namma-discover.vercel.app)
