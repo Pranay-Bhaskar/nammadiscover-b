@@ -1,7 +1,7 @@
 <div align="center">
-# NammaDiscover Backend
 
-  <img src="https://raw.githubusercontent.com/Pranay-Bhaskar/nammadiscover-f/main/frontend/public/logo.png" alt="NammaDiscover Logo" width="340" />
+  <img src="https://raw.githubusercontent.com/Pranay-Bhaskar/nammadiscover-f/main/frontend/public/github_logo.png" alt="NammaDiscover Logo" width="340" />
+
 
 [![Render Deployment](https://img.shields.io/badge/Deployed%20on-Render-blue?style=flat-square&logo=render)](https://namma-discover.onrender.com)
 [![Vercel Deployment](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=flat-square&logo=vercel)](https://namma-discover.vercel.app)
@@ -11,12 +11,12 @@
 
 NammaDiscover Backend is the server-side application for **NammaDiscover**, powering authentication, user management, content delivery, protected APIs, moderation workflows, and admin operations for the platform.
 
+</div>
 ## Overview
 
 This repository contains the backend codebase that supports the NammaDiscover frontend. It exposes the APIs required for authentication, user sessions, protected routes, content retrieval, media-related workflows, and administrative tools.
 
 The backend is designed to serve the frontend application deployed at [namma-discover.onrender.com](https://namma-discover.onrender.com).
-</div>
 
 ## Responsibilities
 
