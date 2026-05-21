@@ -10,8 +10,6 @@
 
 NammaDiscover Backend is the server-side application for **NammaDiscover**, powering authentication, user management, content delivery, protected APIs, moderation workflows, and admin operations for the platform.
 
-## Overview
-
 This repository contains the backend codebase that supports the NammaDiscover frontend. It exposes the APIs required for authentication, user sessions, protected routes, content retrieval, media-related workflows, and administrative tools.
 
 The backend is designed to serve the frontend application deployed at 
