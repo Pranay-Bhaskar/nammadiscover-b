@@ -5,7 +5,6 @@
 
 [![Render Deployment](https://img.shields.io/badge/Deployed%20on-Render-blue?style=flat-square&logo=render)](https://namma-discover.onrender.com)
 [![Vercel Deployment](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=flat-square&logo=vercel)](https://namma-discover.vercel.app)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](./LICENSE)
 [![Contributors](https://img.shields.io/github/contributors/Pranay-Bhaskar/nammadiscover-b?style=flat-square&color=blue)](https://github.com/Pranay-Bhaskar/nammadiscover-b/graphs/contributors)
 
 NammaDiscover Backend is the server-side application for **NammaDiscover**, powering authentication, user management, content delivery, protected APIs, moderation workflows, and admin operations for the platform.
@@ -119,7 +118,3 @@ Before deploying, verify:
 - MongoDB connection is available
 - JWT secret is configured securely
 - API base URL is added in the frontend environment
-
-## License
-
-MIT License
