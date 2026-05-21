@@ -5,7 +5,6 @@
 
 [![Render Deployment](https://img.shields.io/badge/Deployed%20on-Render-blue?style=flat-square&logo=render)](https://namma-discover.onrender.com)
 [![Vercel Deployment](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=flat-square&logo=vercel)](https://namma-discover.vercel.app)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Pranay-Bhaskar/nammadiscover-b/ci.yml?branch=main&style=flat-square)](https://github.com/Pranay-Bhaskar/nammadiscover-b/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](./LICENSE)
 [![Contributors](https://img.shields.io/github/contributors/Pranay-Bhaskar/nammadiscover-b?style=flat-square&color=blue)](https://github.com/Pranay-Bhaskar/nammadiscover-b/graphs/contributors)
 
